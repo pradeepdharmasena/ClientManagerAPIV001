@@ -1,0 +1,6 @@
+@ClientManagerAPIV001_HostAddress = http://localhost:5158
+
+GET {{ClientManagerAPIV001_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
