@@ -13,6 +13,7 @@ namespace ClientManagerAPIV001.Dtos.Profiles
     public class CustomerProfile : Profile
     {
         public CustomerProfile() {
+
             CreateMap<Customer , CustomerRes>();
             CreateMap<CustomerCreateReq , Customer>();
             CreateMap<CustomerUpdateReq, Customer>()
@@ -28,10 +29,15 @@ namespace ClientManagerAPIV001.Dtos.Profiles
             CreateMap<CustomerFieldDefUpdateReq, CustomerFieldDefinition>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
-            CreateMap<CustomerFieldValue, CustomerFieldValueRes>();
-            CreateMap<CustomerFieldValueCreateReq, CustomerFieldValue>();
+            CreateMap<CustomerFieldValue, CustomerFieldValueRes>()
+                .ForMember(des => des.ID, opt => opt.MapFrom(src => src.ID));
+            CreateMap<CustomerFieldValueCreateReq, CustomerFieldValue>()
+                .ForMember(des => des.ID, opt => opt.MapFrom(src => src.FieldID));
             CreateMap<CustomerFieldValueUpdateReq, CustomerFieldValue>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<CustomerFieldDefinition, CustomerFieldRes>();
+            CreateMap<CustomerFieldValue, CustomerFieldRes>();
 
 
 

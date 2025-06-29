@@ -8,6 +8,7 @@ namespace ClientManagerAPIV001.Dtos.Requests.Customer
 {
     public class CustomerCreateReq
     {
+        public string CustomerCD { get; set; } = string.Empty;
         public int CustomerType { get; set; } = 0;
         public int Status { get; set; } = 0;
         public string Email { get; set; } = string.Empty;

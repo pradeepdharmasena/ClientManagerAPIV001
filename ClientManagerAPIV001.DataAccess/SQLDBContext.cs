@@ -1,6 +1,7 @@
 ﻿using ClientManagerAPIV001.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace ClientManagerAPIV001.DataAccess
 {
@@ -14,7 +15,9 @@ namespace ClientManagerAPIV001.DataAccess
         public DbSet<Role> Roles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            optionBuilder.UseSqlServer(configuration.GetConnectionString("WebApiDatabase"));
+            //optionBuilder.UseSqlServer(configuration.GetConnectionString("WebApiDatabase"));
+            optionBuilder.UseMySql(configuration.GetConnectionString("WebApiMysqlDB"),new MySqlServerVersion(new Version(5, 7, 43))  // MySQL version
+);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

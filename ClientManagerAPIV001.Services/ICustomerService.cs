@@ -13,24 +13,24 @@ namespace ClientManagerAPIV001.Services
     {
         public AppRes<CustomerRes> Create(CustomerCreateReq customerCreateReqDTO);
         public AppRes<CustomerRes> Update(CustomerUpdateReq customerUpdateDTO);
-        public AppRes<CustomerRes> GetByCD(Guid cd);
-        public AppRes<List<CustomerRes>> GetAll();
-        public AppRes<CustomerRes> SoftDelete(Guid cd);
-        public AppRes<CustomerRes> DeleteCustomer(Guid cd);
+        public AppRes<CustomerRes> GetByCD(string cd);
+        public AppRes<List<CustomerRes>> GetAll(int pageNumber, int pageSize);
+        public AppRes<CustomerRes> SoftDelete(string cd);
+        public AppRes<CustomerRes> DeleteCustomer(string cd);
 
-        public AppRes<List<CustomerNoteRes>> GetAllNoteByCustomerID(Guid customerCD);
+        public AppRes<List<CustomerNoteRes>> GetAllNoteByCustomerID(string customerCD);
         public AppRes<CustomerNoteRes> Create(CustomerNoteCreateReq customerExtField);
         public AppRes<CustomerNoteRes> Update(CustomerNoteUpdateReq customerExtField);
-        public AppRes<CustomerNoteRes> DeleteCustomerNote(Guid customerCD , int noteID);
+        public AppRes<CustomerNoteRes> DeleteCustomerNote(string customerCD , int noteID);
 
         public AppRes<List<CustomerFieldDefRes>> GetAllCustomerFieldDef();
         public AppRes<CustomerFieldDefRes> Create(CustomerFieldDefCreateReq customerFieldDefCreateReq);
         public AppRes<CustomerFieldDefRes> Update(CustomerFieldDefUpdateReq customerFieldDefUpdateReq);
         public AppRes<CustomerFieldDefRes> DeleteCustomerFieldDef(int fieldDefinitionID);
 
-        public AppRes<List<CustomerFieldValueRes>> GetAllCustomerFieldValueByCustomer(Guid customerCD);
+        public AppRes<List<CustomerFieldValueRes>> GetAllCustomerFieldValueByCustomer(string customerCD);
         public AppRes<CustomerFieldValueRes> Create(CustomerFieldValueCreateReq customerFieldDefCreateReq);
         public AppRes<CustomerFieldValueRes> Update(CustomerFieldValueUpdateReq customerFieldDefUpdateReq);
-        public AppRes<CustomerFieldValueRes> DeleteCustomerFieldValue(Guid CustomerCD, int fieldID);
+        public AppRes<CustomerFieldValueRes> DeleteCustomerFieldValue(string CustomerCD, int fieldID);
     }
 }

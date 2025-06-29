@@ -10,8 +10,11 @@ namespace ClientManagerAPIV001.Repositories
     public interface ICustomerRepository
     {
         public Customer? Create(Customer customer);
-        public Customer? GetByCD(Guid customerCD);
-        public List<Customer>? GetAllCustomers();
+        public Customer? GetByCD(string customerCD);
+        public List<Customer>? GetAllCustomers(int pageNumber, int pageSize, out int totalCount);
+
+        public (List<Customer> Customers, List<CustomerFieldValue> FieldValues, 
+            List<CustomerFieldDefinition> customerFieldDefinitions) GetCustomers(int pageNumber, int pageSize, out int totalCount);
         public Customer? Update(Customer customer);
         public Customer? Delete(Customer customer);
 

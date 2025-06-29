@@ -8,7 +8,7 @@ namespace ClientManagerAPIV001.Dtos.Requests.Customer
 {
     public class CustomerFieldValueUpdateReq
     {
-        public Guid CustomerCD { get; set; }
+        public string CustomerCD { get; set; } = string.Empty;
         public int  FieldID{ get; set; }
         public string? Name { get; set; }
         public string? Value { get; set; }

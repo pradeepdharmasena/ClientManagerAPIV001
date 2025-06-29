@@ -8,7 +8,7 @@ namespace ClientManagerAPIV001.Dtos.Requests.Customer
 {
     public class CustomerUpdateReq
     {
-        public Guid CustomerCD { get; set; }
+        public string CustomerCD { get; set; } = string.Empty;
         public int? CustomerType { get; set; }
         public int? Status { get; set; }
         public string? Email { get; set; }

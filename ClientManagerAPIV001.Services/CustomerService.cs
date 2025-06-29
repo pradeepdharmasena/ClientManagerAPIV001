@@ -43,7 +43,7 @@ namespace ClientManagerAPIV001.Services
             return ResWrapper.Res<CustomerFieldDefRes>(mapper.Map<CustomerFieldDefRes>(customerFieldDefinition));
         }
 
-        public AppRes<CustomerRes> DeleteCustomer(Guid cd)
+        public AppRes<CustomerRes> DeleteCustomer(string cd)
         {
             Customer? customer = customerRepository.GetByCD(cd);
             if (customer == null) return ErrorManager.Error<CustomerRes>("Unable to find the customer");
@@ -54,13 +54,32 @@ namespace ClientManagerAPIV001.Services
             return ResWrapper.Res<CustomerRes>(mapper.Map<CustomerRes>(customer));
         }
 
-        public AppRes<List<CustomerRes>> GetAll()
+        public AppRes<List<CustomerRes>> GetAll(int pageNumber, int pageSize)
         {
-            List<Customer>? customers = customerRepository.GetAllCustomers();
-            return ResWrapper.Res<List<CustomerRes>>(mapper.Map<List<CustomerRes>>(customers));
+            List<Customer>? customers = customerRepository.GetAllCustomers(pageNumber, pageSize, out int totalCount);
+            return ResWrapper.Res<List<CustomerRes>>(mapper.Map<List<CustomerRes>>(customers), totalCount, pageNumber, pageSize);
         }
 
-        public AppRes<List<CustomerNoteRes>> GetAllNoteByCustomerID(Guid customerCD)
+        public AppRes<List<CustomerRes>> GetAllWithFields(int pageNumber, int pageSize)
+        {
+            var (customers, fieldValues, customerFieldDefinitions) = customerRepository.GetCustomers(pageNumber, pageSize, out int totalCount);
+            List<CustomerRes>? customerResList = mapper.Map<List<CustomerRes>>(customers);
+            foreach (CustomerRes customerRes in customerResList)
+            {
+                foreach (CustomerFieldValue customerFieldValue  in fieldValues)
+                {
+                    CustomerFieldDefinition? customerFieldDefinition = customerFieldDefinitions.FirstOrDefault(t => t.ID == customerFieldValue.ID);
+                    if (customerFieldDefinition == null) continue;
+                    CustomerFieldRes customerFieldRes = mapper.Map<CustomerFieldRes>(customerFieldDefinition);
+                    customerFieldRes.Value = customerFieldValue.Value;
+                    customerRes.Fields.Add(customerFieldRes);
+                }
+            }
+
+            return ResWrapper.Res<List<CustomerRes>>(customerResList, totalCount, pageNumber, pageSize);
+        }
+
+        public AppRes<List<CustomerNoteRes>> GetAllNoteByCustomerID(string customerCD)
         {
             Customer? customer = customerRepository.GetByCD(customerCD);
             if (customer == null) return ErrorManager.Error<List<CustomerNoteRes>>("Unable to find the customer");
@@ -73,14 +92,14 @@ namespace ClientManagerAPIV001.Services
 
         }
 
-        public AppRes<CustomerRes> GetByCD(Guid cd)
+        public AppRes<CustomerRes> GetByCD(string cd)
         {
             Customer? customer = customerRepository.GetByCD(cd);
             if (customer == null) return ErrorManager.Error<CustomerRes>("Unable to find the customer");
             return ResWrapper.Res<CustomerRes>(mapper.Map<CustomerRes>(customer));
         }
 
-        public AppRes<CustomerRes> SoftDelete(Guid cd)
+        public AppRes<CustomerRes> SoftDelete(string cd)
         {
             throw new NotImplementedException();
         }
@@ -106,7 +125,7 @@ namespace ClientManagerAPIV001.Services
             return ResWrapper.Res<CustomerFieldDefRes>(customerFieldDefRes);
         }
 
-        public AppRes<CustomerNoteRes> DeleteCustomerNote(Guid customerCD, int noteID)
+        public AppRes<CustomerNoteRes> DeleteCustomerNote(string customerCD, int noteID)
         {
             Customer? customer = customerRepository.GetByCD(customerCD);
             if (customer == null) return ErrorManager.Error<CustomerNoteRes>("No such customer");
@@ -133,7 +152,7 @@ namespace ClientManagerAPIV001.Services
             return ResWrapper.Res<CustomerFieldDefRes>(mapper.Map<CustomerFieldDefRes>(customerFieldDefinition));
         }
 
-        public AppRes<List<CustomerFieldValueRes>> GetAllCustomerFieldValueByCustomer(Guid customerCD)
+        public AppRes<List<CustomerFieldValueRes>> GetAllCustomerFieldValueByCustomer(string customerCD)
         {
             Customer? customer = customerRepository.GetByCD(customerCD);
             if (customer == null) return ErrorManager.Error<List<CustomerFieldValueRes>>("No such customer");
@@ -162,7 +181,7 @@ namespace ClientManagerAPIV001.Services
             return ResWrapper.Res<CustomerFieldValueRes>(mapper.Map<CustomerFieldValueRes>(customerFieldValue)); 
         }
 
-        public AppRes<CustomerFieldValueRes> DeleteCustomerFieldValue(Guid CustomerCD, int fieldID)
+        public AppRes<CustomerFieldValueRes> DeleteCustomerFieldValue(string CustomerCD, int fieldID)
         {
             Customer? customer = customerRepository.GetByCD(CustomerCD);
             if (customer == null) return ErrorManager.Error<CustomerFieldValueRes>("Unable to fetch customer");

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClientManagerAPIV001.DataAccess\ClientManagerAPIV001.DataAccess.csproj" />
+    <ProjectReference Include="..\ClientManagerAPIV001.Dtos\ClientManagerAPIV001.Dtos.csproj" />
     <ProjectReference Include="..\ClientManagerAPIV001.Models\ClientManagerAPIV001.Models.csproj" />
   </ItemGroup>
 

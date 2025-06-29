@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ClientManagerAPIV001.DataAccess;
 using ClientManagerAPIV001.Models;
+using ClientManagerAPIV001.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using ClientManagerAPIV001.Dtos.Responses;
 
 namespace ClientManagerAPIV001.Repositories
 {
@@ -124,9 +126,35 @@ namespace ClientManagerAPIV001.Repositories
             }
         }
 
-        public List<Customer>? GetAllCustomers()
+        public List<Customer>? GetAllCustomers(int pageNumber, int pageSize, out int totalCount)
         {
-            return [.. sQLDBContext.Customers];
+            totalCount = sQLDBContext.Customers.Count();
+
+            return sQLDBContext.Customers
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
+        public (List<Customer> Customers, List<CustomerFieldValue> FieldValues, List<CustomerFieldDefinition> customerFieldDefinitions) GetCustomers(int pageNumber, int pageSize, out int totalCount)
+        {
+            totalCount = sQLDBContext.Customers.Count();
+
+            var customers = sQLDBContext.Customers
+                .OrderBy(c => c.CustomerId) 
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var customerIds = customers.Select(c => c.CustomerId).ToList();
+
+            var fieldValues = sQLDBContext.CustomerFieldValues
+                .Where(fv => customerIds.Contains(fv.CustomerID))
+                .ToList();
+
+            var fieldDefs = sQLDBContext.CustomerFieldDefinitions.ToList();
+
+            return (customers, fieldValues, fieldDefs);
         }
 
         public List<CustomerFieldValue>? GetAllCustomerFieldValue(long customerId)
@@ -148,7 +176,7 @@ namespace ClientManagerAPIV001.Repositories
             return [..sQLDBContext.CustomerFieldDefinitions];
         }
 
-        public Customer? GetByCD(Guid customerCD)
+        public Customer? GetByCD(string customerCD)
         {
             return sQLDBContext.Customers.FirstOrDefault(c => c.CustomerCD == customerCD);
         }

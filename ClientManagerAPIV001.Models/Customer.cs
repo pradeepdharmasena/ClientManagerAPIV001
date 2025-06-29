@@ -10,7 +10,7 @@ namespace ClientManagerAPIV001.Models
     public class Customer
     {
         public long CustomerId { get; set; } = 0;
-        public Guid CustomerCD { get; set; } = Guid.NewGuid();
+        public string CustomerCD { get; set; } = string.Empty;
         public int CustomerType { get; set; } = 0;
         public int Status { get; set; } = 0;
         public string Email { get; set; } = string.Empty;

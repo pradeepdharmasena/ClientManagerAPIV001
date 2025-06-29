@@ -16,5 +16,19 @@ namespace ClientManagerAPIV001.Services.Utils
                 Results = result,
             };
         }
+
+        public static AppRes<T> Res<T>(T result, int totalCount, int pageNbr, int pageSize)
+        {
+            return new AppRes<T>()
+            {
+                Results = result,
+                PaginationInfo = new PaginationInfo()
+                {
+                    TotalCount = totalCount,
+                    PageNumber = pageNbr,
+                    PageSize = pageSize
+                }
+            };
+        }
     }
 }

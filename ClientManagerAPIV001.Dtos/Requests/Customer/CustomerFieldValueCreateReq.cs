@@ -8,8 +8,8 @@ namespace ClientManagerAPIV001.Dtos.Requests.Customer
 {
     public class CustomerFieldValueCreateReq
     {
-        public Guid CustomerCD { get; set; }
-        public required string Name { get; set; }
+        public string CustomerCD { get; set; } = string.Empty;
+        public required int FieldID { get; set; }
         public required string Value { get; set; }
     }
 }

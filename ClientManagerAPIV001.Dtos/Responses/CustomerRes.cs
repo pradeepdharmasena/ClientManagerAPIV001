@@ -9,7 +9,7 @@ namespace ClientManagerAPIV001.Dtos.Responses
 {
     public class CustomerRes
     {
-        public Guid CustomerCD { get; set; }
+        public string CustomerCD { get; set; } = string.Empty;
         public int CustomerType { get; set; } = 0;
         public int Status { get; set; } = 0;
         public string Email { get; set; } = string.Empty;
@@ -17,7 +17,7 @@ namespace ClientManagerAPIV001.Dtos.Responses
         public string LastName { get; set; } = string.Empty;
         public string ProfileImageURL { get; set; } = string.Empty;
         public DateTime CreatedDateTime { get; set; } = DateTime.UtcNow;
-        public List<CustomerNote> ExtFields { get; set; } = [];
+        public List<CustomerFieldRes> Fields { get; set; } = [];
         public bool IsDeleted { get; set; } = false;
     }
 }

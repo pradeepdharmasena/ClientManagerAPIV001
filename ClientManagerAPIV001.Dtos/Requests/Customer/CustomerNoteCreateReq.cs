@@ -8,7 +8,7 @@ namespace ClientManagerAPIV001.Dtos.Requests.Customer
 {
     public class CustomerNoteCreateReq
     {
-        public Guid CustomerCD {  get; set; }
+        public string CustomerCD { get; set; } = string.Empty;
         public int ID { get; set; }
         public string Title { get; set; } = string.Empty;
         public required string Value { get; set; }

@@ -12,16 +12,16 @@ namespace ClientManagerAPIV001.Controllers
     public class CustomerController(ICustomerService customerService) : ControllerBase
     {
         [HttpGet("all")]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int pageNumber, int pageSize)
         {
             if (GetUser() == null) return BadRequest("User is null. May Token invalid.");
-            AppRes<List<CustomerRes>> result = customerService.GetAll();
+            AppRes<List<CustomerRes>> result = customerService.GetAll(pageNumber, pageSize);
             if (result.Error != null) return BadRequest(result);
             return Ok(result);
         }
 
         [HttpGet]
-        public IActionResult GetByCD(Guid customerCD)
+        public IActionResult GetByCD(string customerCD)
         {
             if (GetUser() == null) return BadRequest("User is null. May Token invalid.");
             AppRes<CustomerRes> result = customerService.GetByCD(customerCD);
@@ -30,7 +30,7 @@ namespace ClientManagerAPIV001.Controllers
         }
 
         [HttpGet("note")]
-        public IActionResult GetNote(Guid customerCD)
+        public IActionResult GetNote(string customerCD)
         {
             if (GetUser() == null) return BadRequest("User is null. May Token invalid.");
             AppRes<List<CustomerNoteRes>> result = customerService.GetAllNoteByCustomerID(customerCD);
@@ -39,19 +39,19 @@ namespace ClientManagerAPIV001.Controllers
         }
 
         [HttpGet("fielddef")]
-        public IActionResult GetFieldDef(Guid customerCD)
+        public IActionResult GetFieldDef()
         {
             if (GetUser() == null) return BadRequest("User is null. May Token invalid.");
-            AppRes<CustomerRes> result = customerService.GetByCD(customerCD);
+            AppRes<List<CustomerFieldDefRes>> result = customerService.GetAllCustomerFieldDef();
             if (result.Error != null) return BadRequest(result);
             return Ok(result);
         }
 
         [HttpGet("fieldval")]
-        public IActionResult GetFieldVal(Guid customerCD)
+        public IActionResult GetFieldVal(string customerCD)
         {
             if (GetUser() == null) return BadRequest("User is null. May Token invalid.");
-            AppRes<CustomerRes> result = customerService.GetByCD(customerCD);
+            AppRes<List<CustomerFieldValueRes>> result = customerService.GetAllCustomerFieldValueByCustomer(customerCD);
             if (result.Error != null) return BadRequest(result);
             return Ok(result);
         }
